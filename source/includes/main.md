@@ -1,79 +1,13 @@
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the 3A Middleware API!
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+# Cars
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
-
-# Authentication
-
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
+## Get car makes
 
 ```bash
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```bash
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+curl "http://example.com/cars/makes?year=2014"
 ```
 
 > The above command returns JSON structured like this:
@@ -81,89 +15,417 @@ let kittens = api.kittens.get();
 ```json
 [
   {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
+      "make_id": "acura",
+      "make_display": "Acura",
+      "make_is_common": "1",
+      "make_country": "USA"
   },
   {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+      "make_id": "audi",
+      "make_display": "Audi",
+      "make_is_common": "1",
+      "make_country": "Germany"
   }
 ]
 ```
 
-This endpoint retrieves all kittens.
+This endpoint retrieves makes by production year.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET http://example.com/cars/makes?year=:year`
+
+### Header
+ | |
+--------- | ------- 
+**Content-Type** | application/json
 
 ### Query Parameters
 
 Parameter | Default | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+year | none | Year of model as number
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
 
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+## Get car models
 
 ```bash
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+curl "http://example.com/cars/make/ford?year=2017"
 ```
 
-```javascript
-const kittn = require('kittn');
+> The above command returns JSON structured like this:
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```json
+[
+    {
+        "model_name": "C-Max Energi",
+        "model_make_id": "Ford",
+        "year": 2017
+    },
+    {
+        "model_name": "C-Max Hybrid",
+        "model_make_id": "Ford",
+        "year": 2017
+    }
+]
+```
+
+This endpoint retrieves models by make and year
+
+### HTTP Request
+
+`GET http://example.com/cars/make/:make?year=:year`
+
+### Header
+ | |
+--------- | ------- 
+**Content-Type** | application/json
+
+### Query Parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+year | none | Year of model as number
+make | none | Make of car (ford, bwm)
+
+## Get car colour
+
+```bash
+curl "http://example.com/cars/colours"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+[
+    {
+        "name": "green",
+        "display": "Green"
+    },
+    {
+        "name": "yellow",
+        "display": "Yellow"
+    }
+]
+```
+
+This endpoint retrieves colour of cars
+
+### HTTP Request
+
+`GET http://example.com/cars/colour`
+
+### Header
+ | |
+--------- | ------- 
+**Content-Type** | application/json
+
+# Application
+
+## Health check
+
+```bash
+curl "http://example.com/healthcheck"
 ```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+    "uptime": 9871.694
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This endpoint health check for server
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`GET http://example.com/app/features`
 
-### URL Parameters
+### Header
+ | |
+--------- | ------- 
+**Content-Type** | application/json
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+## Features
+
+```bash
+curl "http://example.com/app/features"
+```
+
+> The above command returns app base features (feature flags)
+
+```json
+{
+    "rso-flag": true,
+    "another-flag": false
+}
+```
+
+This endpoint retrives features flags for application
+
+### HTTP Request
+
+`GET http://example.com/app/features`
+
+### Header
+ | |
+--------- | ------- 
+**Content-Type** | application/json
+
+## Localization
+
+```bash
+curl "http://example.com//app/localization"
+```
+
+> The above command basic localization strings
+
+```json
+{
+    "ok": "OK",
+    "cancel": "Cancel",
+    "next": "Next"
+}
+```
+
+This endpoint retrives localization strings
+
+### HTTP Request
+
+`GET http://example.com/order`
+
+### Header
+ | |
+--------- | ------- 
+**Content-Type** | application/json
+
+# Orders
+
+## Create order
+
+```bash
+curl --request POST \
+  --url 'http://localhost:8000/order' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "memberNumber": "4290050026360715",
+  "comment": "clevertech",
+  "userId": "602675",
+  "pacesetterCode": "L302",
+  "contact": {
+    "firstName": "PRIMARY",
+    "lastName": "DEPENDENT",
+    "telephoneNumber": "4075551234"
+  },
+  "location": {
+    "latitude": 37.708,
+    "longitude": -121.909
+  },
+  "vehicle": {
+    "color": "Black",
+    "make": "FORD",
+    "model": "Pinto",
+    "year": "2003",
+    "driveLine": "2WD"
+  }
+}
+'
+```
+
+> The above command order return sample response
+
+```json
+{
+    "date": "2018-08-09",
+    "id": 8,
+    "minutes": 120
+}
+```
+
+This endpoint create order
+
+### HTTP Request
+
+`POST http://example.com/order`
+
+### Header
+ | |
+--------- | ------- 
+**Content-Type** | application/json
+
+### Body
+`{
+  "memberNumber": "4290050026360715",
+  "comment": "clevertech",
+  "userId": "602675",
+  "pacesetterCode": "L302",
+  "contact": {
+    "firstName": "PRIMARY",
+    "lastName": "DEPENDENT",
+    "telephoneNumber": "4075551234"
+  },
+  "location": {
+    "latitude": 37.708,
+    "longitude": -121.909
+  },
+  "vehicle": {
+    "color": "Black",
+    "make": "FORD",
+    "model": "Pinto",
+    "year": "2003",
+    "driveLine": "2WD"
+  }
+}`
+
+## Get order
+
+```bash
+curl "http://example.com/order?date=2018-07-31&&id=1"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "history": [
+        {
+            "date": "2018-08-03T00:38:56",
+            "status": {
+                "code": "RE",
+                "description": "Received"
+            },
+            "updatedStatus": {
+                "code": "RE",
+                "description": "Received"
+            },
+            "reason": {
+                "code": "2K",
+                "description": "Call Received"
+            }
+        }
+    ],
+    "call_id": 1,
+    "call_date": "2018-08-03"
+}
+```
+
+This endpoint retrieves makes by production year.
+
+### HTTP Request
+
+`GET http://example.com/order?date=:date&&id=:id`
+
+### Header
+ | |
+--------- | ------- 
+**Content-Type** | application/json
+
+### Query Parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+date | none | Date in format YYYY-mm-dd (2018-01-01)
+id | none | Order id as number
+
+# Member
+
+## Get member by member number
+
+```bash
+curl "http://example.com/member?id=4290058524515011"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "clubCode": "005",
+    "membershipId": "85245150",
+    "associateId": "1",
+    "memberNumber": "4290058524515011",
+    "type": "B",
+    "firstName": "ADAM",
+    "lastName": "LUCAS",
+    "expiration": "2019-04-20",
+    "status": "A",
+    "joinYear": 2015,
+    "yearsWithAAA": 5,
+    "telephoneNumbers": [
+        "4155180959"
+    ],
+    "address": {
+        "line1": "2529 NOBLE AVE",
+        "city": "ALAMEDA",
+        "state": "CA",
+        "postalCode": "94501"
+    }
+}
+```
+
+This endpoint member by member number
+
+### HTTP Request
+
+`GET http://example.com/member?id=:id`
+
+### Header
+ | |
+--------- | ------- 
+**Content-Type** | application/json
+
+### Query Parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | none | member number 
+
+## Get member by phone number
+
+```bash
+curl "http://example.com/member?phone=4290058524515011"
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "clubCode": "005",
+    "membershipId": "85245150",
+    "associateId": "1",
+    "memberNumber": "4290058524515011",
+    "type": "B",
+    "firstName": "ADAM",
+    "lastName": "LUCAS",
+    "expiration": "2019-04-20",
+    "status": "A",
+    "joinYear": 2015,
+    "yearsWithAAA": 5,
+    "telephoneNumbers": [
+        "4155180959"
+    ],
+    "address": {
+        "line1": "2529 NOBLE AVE",
+        "city": "ALAMEDA",
+        "state": "CA",
+        "postalCode": "94501"
+    }
+}
+```
+
+This endpoint member by member number
+
+### HTTP Request
+
+`GET http://example.com/member?phone=:id`
+
+### Header
+ | |
+--------- | ------- 
+**Content-Type** | application/json
+
+### Query Parameters
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | none | member phone number
